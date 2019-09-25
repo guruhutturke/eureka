@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "755529038379",
+    "firebase_url": "https://piktorlabsid.firebaseio.com",
+    "project_id": "piktorlabsid",
+    "storage_bucket": "piktorlabsid.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:755529038379:android:92c6cf92c968bd251d886e",
+        "android_client_info": {
+          "package_name": "com.piktorlabsid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "755529038379-6ipsbeu7r2q1ghamm3ggfdp9lcsiurnu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.piktorlabsid",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "755529038379-o6ufb9rj4fqt962rehvs066u26thd2ts.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5jIneh2OuFuBDomT_A2euYmnODmL-7Hs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "755529038379-uorgl2pntaatiaomsqjqdd7m9lgs84np.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
