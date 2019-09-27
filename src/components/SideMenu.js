@@ -2,12 +2,22 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {NavigationActions} from 'react-navigation';
 import AsyncStorage from '@react-native-community/async-storage';
-import Geolocation from '@react-native-community/geolocation';
-import {ScrollView, Text, View, ImageBackground,StyleSheet, Image} from 'react-native';
+import response from '../data/response.json'
+import {ScrollView, Text, View,StyleSheet, Image, Ionicons, TouchableOpacity} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 class SideMenu extends Component {
 
-  state = { currentImageIndex: 0}
+  _isMounted = false;
+  state = { currentImageIndex: 0, data: ""}
+   email =  '';
+
+  componentDidMount(){
+    this._isMounted = true;
+        if(this._isMounted){
+            this.getItemValue();
+        }
+  }
   
   navigateToScreen = (route) => () => {
     const navigateAction = NavigationActions.navigate({
@@ -16,65 +26,125 @@ class SideMenu extends Component {
     this.props.navigation.dispatch(navigateAction);
   }
 
-  images = {
-    0:require("../../assets/jpg/bg1.jpg"),
-    1:require("../../assets/jpg/bg3.jpg"),
-    2:require("../../assets/jpg/bg2.jpg")
-   }
-
-  componentDidMount() {
-    this.getEmail();
+  componentWillUnmount() {
+    this._isMounted = false;
   }
+ 
 
-  async getEmail(){
-    const email = await AsyncStorage.getItem('email');
-    let initialData = email.charAt(0);
-    if(initialData > 'a' && initialData < 'g'){
-      this.setState({ currentImageIndex: 0})
-    } else if(initialData >= 'g' && initialData < 'p'){
-      this.setState({ currentImageIndex: 1})
+  async getItemValue() {
+     this.email = await AsyncStorage.getItem('email');
+    const profileData = await AsyncStorage.getItem('data');
+    let self=this;
+    if(profileData){
+        this.setState({data: JSON.parse(profileData)})
     } else {
-      this.setState({ currentImageIndex: 2})
+       setTimeout(function(){
+        self.setState({data: response})
+        AsyncStorage.setItem('data', JSON.stringify(response));
+       },5000)
     }
   }
 
+
   render () {
     return (
-        <ScrollView>
-          <ImageBackground
-              style={styles.bg}
-              source={this.images[this.state.currentImageIndex]}
-          >
-          <View style={styles.dropview}>
-              <Text style={styles.textBg} onPress={this.navigateToScreen('Home')}>
-              Home
-              </Text>
+        <ScrollView style={styles.content}>
+          <View style={styles.firstHalf}>
+              <View style={styles.imageContainer}>
+                <Image style={styles.picstyle} source={{uri:this.state.data.photoUrl}}></Image>
+              </View>
+              <View style={{flexDirection: 'column',justifyContent: 'center'}}>
+                <Text style={styles.firstHalfText}>{`${this.state.data.firstName} ${this.state.data.lastName}`}</Text>
+                <Text style={styles.secondHalfText}>{this.email}</Text>
+              </View>
           </View>
           <View style={styles.dropview}>
-              <Text style={styles.textBg} onPress={this.navigateToScreen('LogOut')}>
-              Logout
-              </Text>
+              <TouchableOpacity style={[styles.textBg, styles.borderBottom]} onPress={this.navigateToScreen('Home')}>
+                <Icon name="home" size={30} />
+                <Text style={styles.marginLeft}>Home</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.textBg, styles.borderBottom]} onPress={this.navigateToScreen('LogOut')}>
+                <Icon name="sign-out" size={30} />
+                <Text style={styles.marginLeft}>Logout</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.textBg}>
+                <Icon name="cog" size={30} />
+                <Text style={styles.marginLeft}>Settings</Text>
+              </TouchableOpacity>
           </View>
-          </ImageBackground>
         </ScrollView>
     );
-  }
+  } 
 }
 
 const styles = {
-    bg:{
-        height: 800,
-        flex: 1,
-        resizeMode: 'center'
+    // bg:{
+    //     height: 800,
+    //     flex: 1,
+    //     resizeMode: 'center'
+    // },
+    imageContainer: {
+      backgroundColor: "#fff",
+      borderRadius: 50,
+      borderColor: '#fff',
+      borderWidth: 1,
+      overflow: 'hidden'
+    },
+    content: {
+      flex: 1
+    },
+    picstyle: {
+      // borderRadius: 50,
+      width:80,
+      height:80,
+      resizeMode: 'contain'
+      
     },
     textBg: {
-      backgroundColor: 'transparent',
+      // backgroundColor: 'transparent',
+      width: '100%',
+      color: 'black',
+      fontSize: 16,
+      padding: 20,
+      alignItems: 'center',
+      flexDirection: 'row'
+    },
+    firstHalf: {
+      backgroundColor: 'black',
+      paddingTop:20,
+      flexDirection: 'row',
+      paddingBottom: 20,
+      paddingRight: 5,
+      paddingLeft: 5
+    },
+    firstHalfText: {
       color: 'white',
-      fontSize: 18
+      fontSize: 20,
+      // paddingTop: 15,
+      paddingLeft: 15,
+      // paddingBottom:10
+    },
+    secondHalfText: {
+      color: 'white',
+      fontSize: 12,
+      // paddingTop: 15,
+      paddingLeft: 15,
+      // paddingBottom:10
     },
     dropview: {
-      paddingLeft: 20,
-      paddingTop: 20
+      width: '100%',
+      padding: 5
+      // flex: 3,
+      // paddingLeft: 20,
+      // paddingTop: 20,
+      // backgroundColor: 'grey'
+    },
+    marginLeft: {
+      paddingLeft: 15
+    },
+    borderBottom: {
+      borderColor: '#ddd',
+      borderBottomWidth: 1 
     }
 }
 

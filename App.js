@@ -17,7 +17,6 @@ import HolidayList from './src/components/HolidayList';
 import Leave from './src/components/Leave';
 import WFH from './src/components/WFH';
 import SideMenu from './src/components/SideMenu'
-import { ImageBackground, Image, StyleSheet,ImageHeader } from "react-native";
 
 const AuthStackNavigator = createStackNavigator(
   {
@@ -43,18 +42,7 @@ const DrawerNavigator = createDrawerNavigator(
  },
  {
   contentComponent: SideMenu
-  //  navigationOptions: {
-  //     headerStyle: 
-
-    // headerBackground: 
-    //   <ImageBackground
-    //     style={StyleSheet.absoluteFill}
-    //     source={ {uri: './assets/jpg/background-img.jpg'}}
-    //   />
-    
-    // headerTitleStyle: { color: '#fff' },
-    // header: (props) => <ImageHeader {...props} />
-    }  
+ }  
  
  )
 
@@ -67,11 +55,3 @@ const AuthSwitchNavigator = createSwitchNavigator(
 )
 
 export default createAppContainer(AuthSwitchNavigator);
-
-// const App = () => {
-//   return (
-//     <LoginForm />
-//   );
-// }
-
-// export default App;

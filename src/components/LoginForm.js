@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
-import { View, Image, Button, ImageBackground, Text, TouchableOpacity } from 'react-native';
+import { View, Image, Button, ImageBackground, Text, TouchableOpacity, Animated } from 'react-native';
 import { GoogleSignin, statusCodes } from 'react-native-google-signin';
 import AsyncStorage from '@react-native-community/async-storage';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { Card, CardSection, Input, Spinner } from '../common';
 
 class LoginForm extends Component{
-    state = { error: '', loading: false, loggedIn: false }
+    state = { error: '', loading: false, loggedIn: false, loader: false, animation: new Animated.Value(0) }
 
     renderButton() {
         if(this.state.loading){
@@ -37,7 +38,20 @@ class LoginForm extends Component{
 
     async componentDidMount() {
         const userToken = await AsyncStorage.getItem('userToken')
-        this.props.navigation.navigate(userToken ? 'Dashboard' : 'Login')
+        Animated.timing(
+            this.state.animation,
+            {
+                toValue: 1,
+                duration: 1000,
+            }
+        ).start();
+        let self=this;
+        setTimeout(function(){
+            if(userToken == null){
+                self.setState({loader: true})
+            }
+            self.props.navigation.navigate(userToken ? 'Dashboard' : 'Login')
+        }, 3000)
         this._configureGoogleSignIn();
     }
 
@@ -90,25 +104,54 @@ class LoginForm extends Component{
     
     render() {
         const { loginView, container, thumbnailStyle, textStyle } = styles
-        return (
-            <View style={loginView}>
-                <ImageBackground source={require('../../assets/png/Group.png')} style={{width: '100%', height: '100%'}} />
-                <View style={container}>
-                    <Image 
-                        style={thumbnailStyle}
-                        source={require('../../assets/png/Layer_1.png')}
-                    />
-                    <Text style={textStyle}>
-                        Sign in with your Google Account
-                    </Text>
-                    {this.renderButton()}
+        if(this.state.loader){
+            return (
+                <View style={loginView}>
+                    <ImageBackground source={require('../../assets/png/Group.png')} style={{width: '100%', height: '100%'}} />
+                    <View style={container}>
+                        <Image 
+                            style={thumbnailStyle}
+                            source={require('../../assets/png/Layer_1.png')}
+                        />
+                        <Text style={textStyle}>
+                            Sign in with your Google Account
+                        </Text>
+                        {this.renderButton()}
+                    </View>
                 </View>
-            </View>
-        );
+            );
+        } else {
+            return (
+                <View style={styles.loginViewLoader}>
+                    <View style={styles.logoContainer}>
+                        <Animated.Image style={[styles.logo,{opacity: this.state.animation}]} source={require("../../assets/png/Piktorlabs_LOGO_Black.png")}/> 
+                    </View>
+                </View>
+            )
+        }
     }
 }
 
 const styles = {
+    logoContainer: {
+        position: 'absolute',
+        flex: 1,
+        width: wp('105%'),
+        height: hp('15%'),
+        flexDirection:'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    logo: {
+        height: hp('5%'),
+        width: wp('45%')
+    },
+    loginViewLoader:{
+        position: 'relative',
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
     loginView: {
         backgroundColor: "#4A90E2",
         position: 'relative',

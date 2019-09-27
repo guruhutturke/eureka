@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
-import { View,Text, Image, Animated, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
+import { View,Text, Image, Animated, TouchableOpacity, ScrollView, ToastAndroid} from 'react-native';
 import { withNavigation } from "react-navigation";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-community/async-storage';
 import Geolocation from '@react-native-community/geolocation';
 import LinearGradient from 'react-native-linear-gradient';
 import Barcode from 'react-native-barcode-builder';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import response from '../data/response.json'
 import { ProgressiveImage } from '../common';
 console.disableYellowBox = true;
@@ -13,8 +14,6 @@ console.disableYellowBox = true;
 
 const latArray = ['12.9219','12.9220','12.9221','12.9222','12.9223','12.9224'];
 const longArray = ['77.669','77.6700','77.6701'];
-// const ScreenWidth = Math.round(Dimensions.get('window').width);
-// const ScreenHeight = Math.round(Dimensions.get('window').height);
 
 class Dashboard extends Component {
 
@@ -23,9 +22,12 @@ class Dashboard extends Component {
     
 
     componentDidMount(){
-        Geolocation.getCurrentPosition(info => this.determinePosition(info));
-        // position =>  ({latitude: position.coords.latitude.toFixed(4),longitude: position.coords.longitude.toFixed(4)});
-        
+        // ToastAndroid.showWithGravity(
+        //     'All Your Base Are Belong To Us',
+        //     ToastAndroid.SHORT,
+        //     ToastAndroid.CENTER,
+        //   );
+        Geolocation.getCurrentPosition(info => this.determinePosition(info));      
         this._isMounted = true;
         if(this._isMounted){
             this.getItemValue();
@@ -122,12 +124,14 @@ class Dashboard extends Component {
         );
     }
 
-
     render() {
         if(this.state.data !== ""){
             return (
                 <View style={styles.content}>
                     {this.renderData()}
+                    <TouchableOpacity style={styles.hammenu} onPress={() => this.props.navigation.toggleDrawer()}>
+                                <Icon name="bars" size={30}/>
+                    </TouchableOpacity>
                     <TouchableOpacity style={styles.optionContainer} onPress={()=>this.toggle()}>
                         {this.state.status == 'online' && (
                             <Image  source={require("../../assets/png/Oval.png")}/>
@@ -211,7 +215,7 @@ const styles = {
         // position: 'absolute',
         // textAlign: 'center',
         width: wp('105%'),
-        height: hp('10%'),
+        height: hp('15%'),
         flexDirection:'row',
         justifyContent: 'center',
         alignItems: 'center'
@@ -219,8 +223,8 @@ const styles = {
     logo: {
         // alignSelf: 'center',
         // top: -120,
-        height: hp('4%'),
-        width: wp('40%')
+        height: hp('5%'),
+        width: wp('45%')
     },
     profilePic: {
         height: hp('73%'),
@@ -272,8 +276,14 @@ const styles = {
     },
     optionContainer: {
         position: 'absolute',
-        top: 20,
+        top: 50,
         right: 20,
+        width: wp('10%')
+    },
+    hammenu: {
+        position: 'absolute',
+        top: 42,
+        left: 20,
         width: wp('10%')
     },
     topDetails: {
