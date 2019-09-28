@@ -5,5 +5,8 @@
     "lastName": "Dutta",
     "designation": "Senior Software Developer",
     "employeeId": 252,
-    "mobile": "9611813142"
+    "mobile": "9611813142",
+    "birthday":"",
+    "address":"",
+    "emergencyNumber":""
 }
