@@ -1,0 +1,100 @@
+{
+    "data": [
+        {
+            "name": "Neelabh Dutta",
+            "email": "neelabh@piktorlabs.com",
+            "phoneNumber": "123456789",
+            "address": "",
+            "photoUrl": "https://piktorlabs-digitalidcard.s3.amazonaws.com/neelabh%40piktorlabs.com/main.png",
+            "designation": "Senior Software Developer"
+        },
+        {
+            "name": "Abhishek P",
+            "email": "abhishek@piktorlabs.com",
+            "phoneNumber": "123456789",
+            "address": "",
+            "photoUrl": "https://piktorlabs-digitalidcard.s3.amazonaws.com/abhishek.p%40piktorlabs.com/main.png",
+            "designation": "Senior Software Developer"
+        },
+        {
+            "name": "Ramu Reddy",
+            "email": "ramu@piktorlabs.com",
+            "phoneNumber": "123456789",
+            "address": "",
+            "photoUrl": "https://piktorlabs-digitalidcard.s3.amazonaws.com/ramu%40piktorlabs.com/main.png",
+            "designation": "Senior Software Developer"
+        },
+        {
+            "name": "Shetty Guruprasad Jayanth",
+            "email": "shetty@piktorlabs.com",
+            "phoneNumber": "123456789",
+            "address": "",
+            "photoUrl": "https://piktorlabs-digitalidcard.s3.amazonaws.com/shetty%40piktorlabs.com/IMG_9549_croped-min.png",
+            "designation": "Senior Software Developer"
+        },
+        {
+            "name": "Suprita S Totagi",
+            "email": "suprita@piktorlabs.com",
+            "phoneNumber": "123456789",
+            "address": "",
+            "photoUrl": "https://piktorlabs-digitalidcard.s3.amazonaws.com/suprita%40piktorlabs.com/main.png",
+            "designation": "Senior Software Developer"
+        },
+        {
+            "name": "Varnika Sharma",
+            "email": "varnika@piktorlabs.com",
+            "phoneNumber": "123456789",
+            "address": "",
+            "photoUrl": "https://piktorlabs-digitalidcard.s3.amazonaws.com/neelabh%40piktorlabs.com/main.png",
+            "designation": "Senior Software Developer"
+        },
+        {
+            "name": "Hemanth KS",
+            "email": "hemanth@piktorlabs.com",
+            "phoneNumber": "123456789",
+            "address": "",
+            "photoUrl": "https://piktorlabs-digitalidcard.s3.amazonaws.com/neelabh%40piktorlabs.com/main.png",
+            "designation": "Senior Software Developer"
+        },
+        {
+            "name": "Sunil Kumar M",
+            "email": "sunil@piktorlabs.com",
+            "phoneNumber": "123456789",
+            "address": "",
+            "photoUrl": "https://piktorlabs-digitalidcard.s3.amazonaws.com/neelabh%40piktorlabs.com/main.png",
+            "designation": "Senior Software Developer"
+        },
+        {
+            "name": "Shilpy Parashar",
+            "email": "shilpy@piktorlabs.com",
+            "phoneNumber": "123456789",
+            "address": "",
+            "photoUrl": "https://piktorlabs-digitalidcard.s3.amazonaws.com/neelabh%40piktorlabs.com/main.png",
+            "designation": "Senior Software Developer"
+        },
+        {
+            "name": "Vidhi Maheswari",
+            "email": "vidhi@piktorlabs.com",
+            "phoneNumber": "123456789",
+            "address": "",
+            "photoUrl": "https://piktorlabs-digitalidcard.s3.amazonaws.com/vidhi%40piktorlabs.com/main.png",
+            "designation": "Senior Software Developer"
+        },
+        {
+            "name": "Shreyas Kumar",
+            "email": "shreyas@piktorlabs.com",
+            "phoneNumber": "123456789",
+            "address": "",
+            "photoUrl": "https://piktorlabs-digitalidcard.s3.amazonaws.com/neelabh%40piktorlabs.com/main.png",
+            "designation": "Senior Software Developer"
+        },
+        {
+            "name": "Dipesh Agarwal",
+            "email": "dipesh@piktorlabs.com",
+            "phoneNumber": "123456789",
+            "address": "",
+            "photoUrl": "https://piktorlabs-digitalidcard.s3.amazonaws.com/neelabh%40piktorlabs.com/main.png",
+            "designation": "Senior Software Developer"
+        }
+    ]
+}

@@ -198,13 +198,11 @@ class Dashboard extends Component {
 const styles = {
     content: {
         flex: 1,
-
         position: 'relative',
     },
     renderContent:{
         justifyContent:'center',
         alignItems:'flex-end'
-
     },
     loaderContainer: {
         backgroundColor: '#000',
@@ -212,24 +210,19 @@ const styles = {
         alignItems: 'center',
     },
     logoContainer: {
-        // position: 'absolute',
-        // textAlign: 'center',
-        width: wp('105%'),
-        height: hp('15%'),
+        width: wp('100%'),
+        height: hp('17%'),
         flexDirection:'row',
         justifyContent: 'center',
         alignItems: 'center'
     },
     logo: {
-        // alignSelf: 'center',
-        // top: -120,
         height: hp('5%'),
         width: wp('45%')
     },
     profilePic: {
-        height: hp('73%'),
-        width: wp('100%'),
-        // position: 'relative'
+        height: hp('70%'),
+        width: wp('100%')
     },
     linearStyle: {
         width: wp('100%'),
@@ -276,7 +269,7 @@ const styles = {
     },
     optionContainer: {
         position: 'absolute',
-        top: 50,
+        top: 45,
         right: 20,
         width: wp('10%')
     },

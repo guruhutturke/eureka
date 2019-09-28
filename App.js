@@ -16,6 +16,8 @@ import Dashboard from './src/components/Dashboard';
 import HolidayList from './src/components/HolidayList';
 import Leave from './src/components/Leave';
 import WFH from './src/components/WFH';
+import Search from './src/components/searchPeople';
+import Details from './src/components/peopleDetails';
 import SideMenu from './src/components/SideMenu'
 
 const AuthStackNavigator = createStackNavigator(
@@ -24,7 +26,9 @@ const AuthStackNavigator = createStackNavigator(
     testView: { screen: testView},
     HolidayList: { screen: HolidayList},
     Leave: { screen: Leave},
-    WFH: { screen: WFH}
+    WFH: { screen: WFH},
+    Search: { screen: Search},
+    Details: { screen: Details}
   },
   {
     headerMode: 'none',

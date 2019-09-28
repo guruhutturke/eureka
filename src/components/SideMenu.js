@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {NavigationActions} from 'react-navigation';
 import AsyncStorage from '@react-native-community/async-storage';
 import response from '../data/response.json'
-import {ScrollView, Text, View,StyleSheet, Image, Ionicons, TouchableOpacity} from 'react-native';
+import {ScrollView, Text, View, Image, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 class SideMenu extends Component {
@@ -32,7 +32,7 @@ class SideMenu extends Component {
  
 
   async getItemValue() {
-     this.email = await AsyncStorage.getItem('email');
+    this.email = await AsyncStorage.getItem('email');
     const profileData = await AsyncStorage.getItem('data');
     let self=this;
     if(profileData){
@@ -63,13 +63,17 @@ class SideMenu extends Component {
                 <Icon name="home" size={30} />
                 <Text style={styles.marginLeft}>Home</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={[styles.textBg, styles.borderBottom]} onPress={this.navigateToScreen('LogOut')}>
-                <Icon name="sign-out" size={30} />
-                <Text style={styles.marginLeft}>Logout</Text>
+              <TouchableOpacity style={[styles.textBg, styles.borderBottom]} onPress={this.navigateToScreen('Search')}>
+                <Icon name="search" size={30} />
+                <Text style={styles.marginLeft}>Search</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.textBg}>
+              <TouchableOpacity style={[styles.textBg, styles.borderBottom]}>
                 <Icon name="cog" size={30} />
                 <Text style={styles.marginLeft}>Settings</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.textBg} onPress={this.navigateToScreen('LogOut')}>
+                <Icon name="sign-out" size={30} />
+                <Text style={styles.marginLeft}>Logout</Text>
               </TouchableOpacity>
           </View>
         </ScrollView>
@@ -78,11 +82,6 @@ class SideMenu extends Component {
 }
 
 const styles = {
-    // bg:{
-    //     height: 800,
-    //     flex: 1,
-    //     resizeMode: 'center'
-    // },
     imageContainer: {
       backgroundColor: "#fff",
       borderRadius: 50,
@@ -94,14 +93,11 @@ const styles = {
       flex: 1
     },
     picstyle: {
-      // borderRadius: 50,
       width:80,
       height:80,
       resizeMode: 'contain'
-      
     },
     textBg: {
-      // backgroundColor: 'transparent',
       width: '100%',
       color: 'black',
       fontSize: 16,
@@ -120,27 +116,22 @@ const styles = {
     firstHalfText: {
       color: 'white',
       fontSize: 20,
-      // paddingTop: 15,
       paddingLeft: 15,
-      // paddingBottom:10
+      fontFamily: 'TitilliumWeb-Regular'
     },
     secondHalfText: {
       color: 'white',
       fontSize: 12,
-      // paddingTop: 15,
       paddingLeft: 15,
-      // paddingBottom:10
+      fontFamily: 'TitilliumWeb-Regular'
     },
     dropview: {
       width: '100%',
       padding: 5
-      // flex: 3,
-      // paddingLeft: 20,
-      // paddingTop: 20,
-      // backgroundColor: 'grey'
     },
     marginLeft: {
-      paddingLeft: 15
+      paddingLeft: 15,
+      fontFamily: 'TitilliumWeb-Regular'
     },
     borderBottom: {
       borderColor: '#ddd',
