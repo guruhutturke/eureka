@@ -67,6 +67,10 @@ class SideMenu extends Component {
                 <Icon name="search" size={30} />
                 <Text style={styles.marginLeft}>Search</Text>
               </TouchableOpacity>
+              <TouchableOpacity style={[styles.textBg, styles.borderBottom]} onPress={this.navigateToScreen('Birthday')}>
+                <Icon name="birthday-cake" size={30} />
+                <Text style={styles.marginLeft}>Birthdays</Text>
+              </TouchableOpacity>
               <TouchableOpacity style={[styles.textBg, styles.borderBottom]}>
                 <Icon name="cog" size={30} />
                 <Text style={styles.marginLeft}>Settings</Text>

@@ -18,6 +18,7 @@ import Leave from './src/components/Leave';
 import WFH from './src/components/WFH';
 import Search from './src/components/searchPeople';
 import Details from './src/components/peopleDetails';
+import Birthday from './src/components/Birthday';
 import SideMenu from './src/components/SideMenu'
 
 const AuthStackNavigator = createStackNavigator(
@@ -28,7 +29,8 @@ const AuthStackNavigator = createStackNavigator(
     Leave: { screen: Leave},
     WFH: { screen: WFH},
     Search: { screen: Search},
-    Details: { screen: Details}
+    Details: { screen: Details},
+    Birthday: { screen: Birthday}
   },
   {
     headerMode: 'none',

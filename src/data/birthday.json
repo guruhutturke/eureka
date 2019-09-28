@@ -1,0 +1,34 @@
+{
+    "data": [
+        {
+            "name": "Neelabh",
+            "photoUrl": "https://piktorlabs-digitalidcard.s3.amazonaws.com/neelabh%40piktorlabs.com/main.png",
+            "birthDay": "10 October",
+            "email": "neelabh@piktorlabs.com"
+        },
+        {
+            "name": "Abhishek",
+            "photoUrl": "https://piktorlabs-digitalidcard.s3.amazonaws.com/abhishek.p%40piktorlabs.com/main.png",
+            "birthDay": "12 October",
+            "email": "neelabh@piktorlabs.com"
+        },
+        {
+            "name": "Ramu",
+            "photoUrl": "https://piktorlabs-digitalidcard.s3.amazonaws.com/ramu%40piktorlabs.com/main.png",
+            "birthDay": "16 October",
+            "email": "neelabh@piktorlabs.com"
+        },
+        {
+            "name": "Shetty",
+            "photoUrl": "https://piktorlabs-digitalidcard.s3.amazonaws.com/shetty%40piktorlabs.com/IMG_9549_croped-min.png",
+            "birthDay": "29 October",
+            "email": "neelabh@piktorlabs.com"
+        },
+        {
+            "name": "Suprita",
+            "photoUrl": "https://piktorlabs-digitalidcard.s3.amazonaws.com/suprita%40piktorlabs.com/main.png",
+            "birthDay": "7 November",
+            "email": "neelabh@piktorlabs.com"
+        }
+    ]
+}
