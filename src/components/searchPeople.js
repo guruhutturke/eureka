@@ -26,8 +26,63 @@ class SearchPeople extends Component {
       this.setState({ peopleList: filteredValue})
     }
 
-    renderData(){
-      return this.state.peopleList.map((people, i) => {
+    sortData(users){
+      let data = users.sort(function(a, b){
+        if(a.name < b.name) { return -1; }
+        if(a.name > b.name) { return 1; }
+        return 0;
+      })
+      return data;
+    }
+
+    massageData(){
+      let usersData = this.sortData(this.state.peopleList);
+      let usersArray = [];
+      usersData.map((item)=>{
+        usersArray.push(item.name)
+      })
+      let sortedObj = usersArray.reduce((a, c) => {
+        // c[0] should be the first letter of an entry
+        let k = c[0].toLocaleUpperCase()
+    
+        // either push to an existing dict entry or create one
+        if (a[k]) a[k].push(c)
+        else a[k] = [c]
+    
+        return a
+      }, {})
+
+      let keys = Object.keys(sortedObj);
+      let finalArray = [];
+      keys.map((key)=>{
+        let usersObj = {};
+        usersObj.letter = key;
+        usersObj.data = sortedObj[key]
+        finalArray.push(usersObj)
+      })
+      
+      finalArray.map((item)=>{
+        let finalList = [];
+        item.data.map((itemName)=>{
+          let filterName = usersData.filter(function(item){
+            return itemName == item.name
+          })
+          finalList.push(filterName[0])
+        })
+        item.data = finalList
+      })
+      return finalArray.map((item, i)=>{
+        return (
+          <View key={i}>
+            <Text style={styles.letterStyle}>{item.letter}</Text>
+            {this.renderData(item.data)}
+          </View>
+        )
+      })
+    }
+
+    renderData(userData){
+      return userData.map((people, i) => {
         return (
           <TouchableOpacity style={styles.peopleData} key={i} onPress={()=> this.props.navigation.navigate('Details', people)}>
             <View style={styles.imageContainer}>
@@ -45,19 +100,18 @@ class SearchPeople extends Component {
           return (
             <View style={container}>
                 <View style={flexContainer}>
-                  <Text style={textStyle}>SEARCH</Text>
-
                   <View style={searchContainer}>
-                    <Icon name="search" size={25} style={iconStyle}/>
+                    <Image source={require('../../assets/png/Search.png')} style={iconStyle}/>
                     <TextInput
                       style={inputStyle}
                       onChangeText={value => this.onChangeText({ value })}
                       value={this.state.value}
+                      placeholder="Search"
                     />
                   </View>
 
                   <ScrollView style={peopleContainer}>
-                    {this.renderData()}
+                    {this.massageData()}
                   </ScrollView>
                 </View>
             </View>
@@ -76,8 +130,7 @@ const styles = {
     container: {
       flex: 1,
       position: 'relative',
-      backgroundColor: "#F0B41B",
-      padding: 20
+      backgroundColor: "#e2e2e2"
     },
     flexContainer: {
       flex: 1,
@@ -92,14 +145,18 @@ const styles = {
     searchContainer: {
       backgroundColor: '#fff',
       borderWidth: 1,
-      borderRadius: 5,
-      marginTop: 5,
+      borderRadius: 3,
       position: "relative",
       borderColor: '#fff',
-      marginBottom: 20,
+      margin: 20,
+      marginBottom: 10,
       width: wp('90%'),
       flexDirection: 'row',
-      paddingLeft: 15
+      paddingLeft: 15,
+      shadowColor: '#000',
+      shadowOffset: { width: 1, height: 2},
+      shadowOpacity: 1,
+      elevation: 3
     }, 
     inputStyle: {
       backgroundColor: '#fff',
@@ -111,21 +168,21 @@ const styles = {
       marginRight: 5
     },
     peopleContainer: {
-      width: wp('90%'),
+      width: wp('100%'),
       height: hp('100%')
     },
     peopleData: {
-      height: 50,
+      height: 70,
       width: '100%',
       flexDirection: 'row',
       alignItems: 'center',
-      padding: 10,
-      marginBottom: 10,
+      padding: 20,
+      borderColor: '#ddd',
+      borderBottomWidth: 1,
       backgroundColor: '#fff',
       borderRadius: 5
     },
     imageContainer: {
-      borderWidth: 2,
       borderRadius: 100,
       borderColor: "#000",
       backgroundColor: "#ccc",
@@ -136,6 +193,12 @@ const styles = {
       width:40,
       height:40,
       resizeMode: 'contain'
+    },
+    letterStyle: {
+      paddingTop: 5,
+      paddingBottom: 5,
+      paddingLeft: 20,
+      fontFamily: 'TitilliumWeb-SemiBold'
     }
 }
 

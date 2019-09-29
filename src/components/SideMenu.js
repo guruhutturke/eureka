@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import response from '../data/response.json'
 import {ScrollView, Text, View, Image, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { widthPercentageToDP, heightPercentageToDP } from 'react-native-responsive-screen';
 
 class SideMenu extends Component {
 
@@ -48,7 +49,7 @@ class SideMenu extends Component {
 
   render () {
     return (
-        <ScrollView style={styles.content}>
+        <View style={styles.content}>
           <View style={styles.firstHalf}>
               <View style={styles.imageContainer}>
                 <Image style={styles.picstyle} source={{uri:this.state.data.photoUrl}}></Image>
@@ -59,46 +60,45 @@ class SideMenu extends Component {
               </View>
           </View>
           <View style={styles.dropview}>
-              <TouchableOpacity style={[styles.textBg, styles.borderBottom]} onPress={this.navigateToScreen('Home')}>
-                <Icon name="home" size={30} />
-                <Text style={styles.marginLeft}>Home</Text>
+              <TouchableOpacity style={styles.textBg} onPress={this.navigateToScreen('Home')}>
+                <Text style={styles.marginLeft}>ID CARD</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={[styles.textBg, styles.borderBottom]} onPress={this.navigateToScreen('Search')}>
-                <Icon name="search" size={30} />
-                <Text style={styles.marginLeft}>Search</Text>
+              <TouchableOpacity style={styles.textBg} onPress={this.navigateToScreen('Details')}>
+                <Text style={styles.marginLeft}>PERSONAL DETAILS</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={[styles.textBg, styles.borderBottom]} onPress={this.navigateToScreen('Birthday')}>
-                <Icon name="birthday-cake" size={30} />
-                <Text style={styles.marginLeft}>Birthdays</Text>
+              <TouchableOpacity style={styles.textBg} onPress={this.navigateToScreen('Birthday')}>
+                <Text style={styles.marginLeft}>BIRTHDAYS</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={[styles.textBg, styles.borderBottom]} onPress={this.navigateToScreen('Settings')}>
-                <Icon name="cog" size={30} />
-                <Text style={styles.marginLeft}>Settings</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.textBg} onPress={this.navigateToScreen('LogOut')}>
-                <Icon name="sign-out" size={30} />
-                <Text style={styles.marginLeft}>Logout</Text>
+              <TouchableOpacity style={styles.textBg} onPress={this.navigateToScreen('Search')}>
+                <Text style={styles.marginLeft}>EMPLOYEES</Text>
               </TouchableOpacity>
           </View>
-        </ScrollView>
+          <View style={styles.logoutBtn}>
+            <TouchableOpacity style={styles.signoutTextContainer} onPress={this.navigateToScreen('LogOut')}>
+              <Text style={styles.signoutText}>SIGNOUT</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
     );
   } 
 }
 
 const styles = {
     imageContainer: {
-      backgroundColor: "#fff",
+      backgroundColor: "#ccc",
       borderRadius: 50,
       borderColor: '#fff',
       borderWidth: 1,
       overflow: 'hidden'
     },
     content: {
-      flex: 1
+      flex: 1,
+      position: 'relative',
+      overflow: 'hidden'
     },
     picstyle: {
-      width:80,
-      height:80,
+      width:60,
+      height:60,
       resizeMode: 'contain'
     },
     textBg: {
@@ -109,22 +109,31 @@ const styles = {
       alignItems: 'center',
       flexDirection: 'row'
     },
+    signoutTextContainer: {
+      alignItems: 'center',
+      width: widthPercentageToDP('78%')
+    },
+    signoutText:{
+      textAlign: 'center',
+      color: '#fff',
+      padding: 20,
+      fontFamily: 'TitilliumWeb-Regular'
+    },
     firstHalf: {
-      backgroundColor: 'black',
-      paddingTop:20,
+      backgroundColor: '#fff',
+      padding:20,
       flexDirection: 'row',
-      paddingBottom: 20,
-      paddingRight: 5,
-      paddingLeft: 5
+      borderBottomWidth: 1,
+      borderColor: '#ddd'
     },
     firstHalfText: {
-      color: 'white',
+      color: '#000',
       fontSize: 20,
       paddingLeft: 15,
       fontFamily: 'TitilliumWeb-Regular'
     },
     secondHalfText: {
-      color: 'white',
+      color: '#666',
       fontSize: 12,
       paddingLeft: 15,
       fontFamily: 'TitilliumWeb-Regular'
@@ -135,11 +144,12 @@ const styles = {
     },
     marginLeft: {
       paddingLeft: 15,
-      fontFamily: 'TitilliumWeb-Regular'
+      fontFamily: 'TitilliumWeb-SemiBold'
     },
-    borderBottom: {
-      borderColor: '#ddd',
-      borderBottomWidth: 1 
+    logoutBtn: {
+      position: 'absolute',
+      backgroundColor: '#1989FA',
+      bottom: 0
     }
 }
 

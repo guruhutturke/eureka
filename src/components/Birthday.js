@@ -97,7 +97,8 @@ const styles = {
         borderColor: '#fff',
         shadowColor: '#000',
         shadowOffset: { width: 2, height: 8},
-        shadowOpacity: 0.6,
+        shadowOpacity: 1,
+        elevation: 5,
         flexDirection: 'row',
         alignItems: 'center'
     },
