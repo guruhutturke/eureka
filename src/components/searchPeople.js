@@ -84,7 +84,7 @@ class SearchPeople extends Component {
     renderData(userData){
       return userData.map((people, i) => {
         return (
-          <TouchableOpacity style={styles.peopleData} key={i} onPress={()=> this.props.navigation.navigate('Details', people)}>
+          <TouchableOpacity style={styles.peopleData} key={i} onPress={()=> this.props.navigation.navigate('Employee', people)}>
             <View style={styles.imageContainer}>
               <Image style={styles.picstyle} source={{uri:people.photoUrl}}></Image>
             </View>

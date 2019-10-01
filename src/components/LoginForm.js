@@ -68,12 +68,13 @@ class LoginForm extends Component{
             this.setState({ loading: true})
             await GoogleSignin.hasPlayServices();
             const userInfo = await GoogleSignin.signIn();
-            await GoogleSignin.revokeAccess();
+            // await GoogleSignin.revokeAccess();
             console.log('Success:',userInfo);
             let domain = userInfo.user.email.split('@')[1];
             if(domain == 'piktorlabs.com'){
                 AsyncStorage.setItem('email', userInfo.user.email);
                 AsyncStorage.setItem('userToken', userInfo.idToken);
+                console.log('localstoragetoken',userInfo.idToken)
                 this.props.navigation.navigate('Dashboard')
             } else {
                 this.setState({ loading: false,

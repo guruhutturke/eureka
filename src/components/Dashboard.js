@@ -7,6 +7,7 @@ import Geolocation from '@react-native-community/geolocation';
 import LinearGradient from 'react-native-linear-gradient';
 import Barcode from 'react-native-barcode-builder';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { GoogleSignin, statusCodes } from 'react-native-google-signin';
 import response from '../data/response.json'
 import { ProgressiveImage } from '../common';
 console.disableYellowBox = true;
@@ -82,6 +83,7 @@ class Dashboard extends Component {
         const email = await AsyncStorage.getItem('email');
         const profileData = await AsyncStorage.getItem('data');
         const userToken = await AsyncStorage.getItem('userToken');
+        console.log('user-token dashboard',userToken)
         let self=this;
         if(profileData){
             this.setState({data: JSON.parse(profileData)})
@@ -91,6 +93,21 @@ class Dashboard extends Component {
             AsyncStorage.setItem('data', JSON.stringify(response));
            },5000)
         }
+
+        debugger;
+        try {
+            await GoogleSignin.signInSilently();
+            console.log("reached");
+            
+            const tokens = await GoogleSignin.getTokens();
+            debugger;
+            console.log('local-host',)
+            console.log('silentlysignin',tokens)
+        } catch(error) {
+            console.log("silent sign in error ", error);
+            
+        }
+        
     }
 
     moveTo(){
@@ -164,18 +181,20 @@ class Dashboard extends Component {
                                             <Text style={styles.bottomText}>Office</Text>
                                         </View>
                                     </TouchableOpacity>
-                                    <TouchableOpacity  activeOpacity={0.5} style={styles.ButtonStyle} onPress={()=>this.routeTo('WFH')}>
+                                    <TouchableOpacity  activeOpacity={0.5} style={styles.ButtonStyle} onPress={()=>this.routeTo('WFH')} disabled={true}>
                                         <Image style={styles.statusImage} source={require("../../assets/png/wfh.png")} />
                                         <View style={styles.status}>
                                             <Text style={styles.topText}>Work from</Text>
                                             <Text style={styles.bottomText}>Home</Text>
+                                            <Text style={styles.endText}>Coming Soon</Text>
                                         </View>
                                     </TouchableOpacity>
-                                    <TouchableOpacity  activeOpacity={0.5} style={styles.ButtonStyle} onPress={()=>this.routeTo('Leave')}>
+                                    <TouchableOpacity  activeOpacity={0.5} style={styles.ButtonStyle} onPress={()=>this.routeTo('Leave')} disabled={true}>
                                         <Image style={styles.statusImage} source={require("../../assets/png/leave.png")} />
                                         <View style={styles.status}>
                                             <Text style={styles.topText}>Apply</Text>
                                             <Text style={styles.bottomText}>Leave</Text>
+                                            <Text style={styles.endText}>Coming Soon</Text>
                                         </View>
                                     </TouchableOpacity>
                                 </ScrollView>
@@ -337,7 +356,7 @@ const styles = {
         padding: 20,
         width: 110,
         height: 110,
-        marginRight: 13
+        marginRight: 13,
     },
     statusImage: {
         position: 'absolute',
@@ -358,6 +377,10 @@ const styles = {
     bottomText: {
         fontSize: 18,
         fontFamily: 'TitilliumWeb-Regular'
+    },
+    endText: {
+        fontSize: 10,
+        fontFamily: 'TitilliumWeb-Regular' 
     }
 
 }

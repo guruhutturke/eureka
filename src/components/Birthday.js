@@ -8,6 +8,7 @@ class BirthDay extends Component {
 
     componentDidMount(){
         this.setState({ birthdayList: data.data });
+        onchange = () => {this.props.myFunction()}
     }
 
     sendEmail(email){
@@ -82,8 +83,8 @@ const styles = {
         position: 'relative'
     },
     cakeLogo: {
-        width: 20,
-        height: 20
+        width: wp('5%'),
+        height: hp('3%')
     },
     contentContainer: {
         width: wp('100%'),
@@ -127,7 +128,7 @@ const styles = {
         position:'absolute',
         width: 1,
         backgroundColor: '#b68ff7',
-        height: hp('13%'),
+        height: hp('12%'),
         top: 70,
         left: 10
     }

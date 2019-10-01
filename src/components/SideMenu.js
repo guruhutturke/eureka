@@ -46,11 +46,15 @@ class SideMenu extends Component {
     }
   }
 
+  onload = (data) => {
+   
+  }
+
 
   render () {
     return (
         <View style={styles.content}>
-          <View style={styles.firstHalf}>
+          <TouchableOpacity style={styles.firstHalf} onPress={this.navigateToScreen('Details')}>
               <View style={styles.imageContainer}>
                 <Image style={styles.picstyle} source={{uri:this.state.data.photoUrl}}></Image>
               </View>
@@ -58,7 +62,10 @@ class SideMenu extends Component {
                 <Text style={styles.firstHalfText}>{`${this.state.data.firstName} ${this.state.data.lastName}`}</Text>
                 <Text style={styles.secondHalfText}>{this.email}</Text>
               </View>
-          </View>
+              <View style={styles.arrowContainer}>
+                <Image style={styles.arrowStyle} source = {require("../../assets/png/right-arrow.png")}></Image>
+              </View>              
+          </TouchableOpacity>
           <View style={styles.dropview}>
               <TouchableOpacity style={styles.textBg} onPress={this.navigateToScreen('Home')}>
                 <Text style={styles.marginLeft}>ID CARD</Text>
@@ -66,7 +73,7 @@ class SideMenu extends Component {
               <TouchableOpacity style={styles.textBg} onPress={this.navigateToScreen('Details')}>
                 <Text style={styles.marginLeft}>PERSONAL DETAILS</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.textBg} onPress={this.navigateToScreen('Birthday')}>
+              <TouchableOpacity style={styles.textBg} onPress={this.navigateToScreen('Birthday', this.onload.bind(this.data))}>
                 <Text style={styles.marginLeft}>BIRTHDAYS</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.textBg} onPress={this.navigateToScreen('Search')}>
@@ -85,11 +92,21 @@ class SideMenu extends Component {
 
 const styles = {
     imageContainer: {
+      // edgeWidth: widthPercentageToDP * 0.5,
       backgroundColor: "#ccc",
       borderRadius: 50,
       borderColor: '#fff',
       borderWidth: 1,
       overflow: 'hidden'
+    },
+    arrowContainer: {
+      paddingLeft: 30,
+      paddingTop: 20
+    },
+    arrowStyle: {
+      width: 15,
+      height: 20,
+      
     },
     content: {
       flex: 1,
