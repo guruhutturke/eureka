@@ -3,14 +3,22 @@ import { Text, ScrollView, View, TextInput, Image, TouchableOpacity } from 'reac
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { withNavigation } from "react-navigation";
+import AsyncStorage from '@react-native-community/async-storage';
 import data from '../data/people.json'
 
 class SearchPeople extends Component {
     state = { value: "" , peopleList: "" }
 
     componentDidMount(){
+      this.getItemValue();
       this.setState({ peopleList: data.data})
     }
+
+    async getItemValue() {
+      const email = await AsyncStorage.getItem('email');
+      let detailsResponse = await AsyncStorage.getItem('detailsResponse');
+      console.log('detailsResponse', JSON.parse(detailsResponse));
+  }
 
     onChangeText(value){
       this.setState({ value: value.value })

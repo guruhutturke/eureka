@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import {NavigationActions} from 'react-navigation';
 import AsyncStorage from '@react-native-community/async-storage';
-import response from '../data/response.json'
 import {ScrollView, Text, View, Image, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { widthPercentageToDP, heightPercentageToDP } from 'react-native-responsive-screen';
@@ -10,7 +9,7 @@ import { widthPercentageToDP, heightPercentageToDP } from 'react-native-responsi
 class SideMenu extends Component {
 
   _isMounted = false;
-  state = { currentImageIndex: 0, data: ""}
+  state = { currentImageIndex: 0, data: "", firstName: "", lastName: ""}
    email =  '';
 
   componentDidMount(){
@@ -30,24 +29,26 @@ class SideMenu extends Component {
   componentWillUnmount() {
     this._isMounted = false;
   }
- 
+  
+  setValues(response){
+    let nameValue = response.name;
+    nameValue = nameValue.split(' ');
+    let firstName = nameValue[0];
+    let lastName = "";
+    nameValue.shift();
+    nameValue.map((item)=>{
+        lastName = lastName + item + ' ';
+    })
+    lastName = lastName.trimRight();
+    this.setState({ data: response,
+                    firstName: firstName,
+                    lastName: lastName});
+  }
 
   async getItemValue() {
     this.email = await AsyncStorage.getItem('email');
     const profileData = await AsyncStorage.getItem('data');
-    let self=this;
-    if(profileData){
-        this.setState({data: JSON.parse(profileData)})
-    } else {
-       setTimeout(function(){
-        self.setState({data: response})
-        AsyncStorage.setItem('data', JSON.stringify(response));
-       },5000)
-    }
-  }
-
-  onload = (data) => {
-   
+    this.setValues(JSON.parse(profileData));
   }
 
 
@@ -59,7 +60,7 @@ class SideMenu extends Component {
                 <Image style={styles.picstyle} source={{uri:this.state.data.photoUrl}}></Image>
               </View>
               <View style={{flexDirection: 'column',justifyContent: 'center'}}>
-                <Text style={styles.firstHalfText}>{`${this.state.data.firstName} ${this.state.data.lastName}`}</Text>
+                <Text style={styles.firstHalfText}>{`${this.state.firstName} ${this.state.lastName}`}</Text>
                 <Text style={styles.secondHalfText}>{this.email}</Text>
               </View>
               <View style={styles.arrowContainer}>
@@ -73,7 +74,10 @@ class SideMenu extends Component {
               <TouchableOpacity style={styles.textBg} onPress={this.navigateToScreen('Details')}>
                 <Text style={styles.marginLeft}>PERSONAL DETAILS</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.textBg} onPress={this.navigateToScreen('Birthday', this.onload.bind(this.data))}>
+              <TouchableOpacity style={styles.textBg} onPress={this.navigateToScreen('HolidayList')}>
+                <Text style={styles.marginLeft}>HOLIDAYS</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.textBg} onPress={this.navigateToScreen('Birthday')}>
                 <Text style={styles.marginLeft}>BIRTHDAYS</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.textBg} onPress={this.navigateToScreen('Search')}>

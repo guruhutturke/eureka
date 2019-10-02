@@ -8,7 +8,6 @@ class BirthDay extends Component {
 
     componentDidMount(){
         this.setState({ birthdayList: data.data });
-        onchange = () => {this.props.myFunction()}
     }
 
     sendEmail(email){

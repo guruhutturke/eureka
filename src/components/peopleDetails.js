@@ -2,39 +2,32 @@ import React, {Component} from 'react';
 import { Text, ScrollView, View, TextInput, Image, TouchableOpacity, Linking, Platform } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-community/async-storage';
-import response from '../data/response.json'
 
-class peopleDetails extends Component {
-    state = { name:"", photoUrl:"", phoneNumber:"", email:"", address:"", designation:"", data:"", title:"" }
+class empDetails extends Component {
+    state = { data:"", firstName: "", lastName: "" }
     
     componentDidMount(){
-        let name = this.props.navigation.getParam('name', '');
-        let photoUrl = this.props.navigation.getParam('photoUrl', '');
-        let phoneNumber = this.props.navigation.getParam('phoneNumber', '');
-        let email = this.props.navigation.getParam('email', '');
-        let address = this.props.navigation.getParam('address', '');
-        let designation = this.props.navigation.getParam('designation', '');
-        if(name !== ""){
-            this.setState({ name, photoUrl, phoneNumber, email, address, designation, title: "EMPLOYEE"})
-        } else {
-            this.getItemValue();
-        }
+        this.getItemValue();
     }
 
+    setValues(response){
+        let nameValue = response.name;
+        nameValue = nameValue.split(' ');
+        let firstName = nameValue[0];
+        let lastName = "";
+        nameValue.shift();
+        nameValue.map((item)=>{
+            lastName = lastName + item + ' ';
+        })
+        lastName = lastName.trimRight();
+        this.setState({ data: response,
+                        firstName: firstName,
+                        lastName: lastName});
+      }
+
     async getItemValue() {
-        const email = await AsyncStorage.getItem('email');
         const profileData = await AsyncStorage.getItem('data');
-        let self=this;
-        if(profileData){
-            this.setState({ data: JSON.parse(profileData),
-                            email: email,
-                            title: "PERSONAL" })
-        } else {
-           setTimeout(function(){
-            self.setState({data: response})
-            AsyncStorage.setItem('data', JSON.stringify(response));
-           },5000)
-        }
+        this.setValues(JSON.parse(profileData));
     }
 
     dialCall(){
@@ -57,14 +50,14 @@ class peopleDetails extends Component {
                 phoneStyle, phoneText, section, rightSection, title, value, noBorder } = styles;
         return(
             <ScrollView style={container}>
-                <Text style={headerStyle}>{this.state.title} DETAILS</Text>
+                <Text style={headerStyle}>PERSONAL DETAILS</Text>
                 <View style={topSection}>
                     <View style={photoContainer}>
-                        <Image style={styles.picstyle} source={{uri:this.state.photoUrl || this.state.data.photoUrl}}></Image>
+                        <Image style={styles.picstyle} source={{uri:this.state.data.photoUrl}}></Image>
                     </View>
-                    <Text style={textStyle}>{this.state.name || (this.state.data.firstName + ' ' + this.state.data.lastName)}</Text>
+                    <Text style={textStyle}>{this.state.firstName + ' ' + this.state.lastName}</Text>
                     <TouchableOpacity style={phoneStyle} onPress={()=>this.dialCall()}>
-                        <Text style={phoneText}>{this.state.phoneNumber || this.state.data.mobile}</Text>
+                        <Text style={phoneText}>{this.state.data.mobile}</Text>
                         <Image source={require('../../assets/png/phone.png')} />
                     </TouchableOpacity>
                 </View>
@@ -81,7 +74,7 @@ class peopleDetails extends Component {
                 <View style={section}>
                     <View>
                         <Text style={title}>EMAIL</Text>
-                        <Text style={value}>{this.state.email}</Text>
+                        <Text style={value}>{this.state.data.email}</Text>
                     </View>
                     <View style={rightSection}>
                         <TouchableOpacity onPress={()=>this.sendEmail()}>
@@ -158,7 +151,7 @@ const styles = {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        width: wp('40%')
+        width: wp('45%')
     },
     phoneText: {
         color: '#fff',
@@ -190,4 +183,4 @@ const styles = {
     }
 }
 
-export default peopleDetails
+export default empDetails

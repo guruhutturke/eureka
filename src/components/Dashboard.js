@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { View,Text, Image, Animated, TouchableOpacity, ScrollView, ToastAndroid} from 'react-native';
+import axios from 'axios';
 import { withNavigation } from "react-navigation";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -19,7 +20,7 @@ const longArray = ['77.669','77.6700','77.6701'];
 class Dashboard extends Component {
 
     _isMounted = false;
-    state = { data: "", visible: false, animation: new Animated.Value(), status: "offline" };
+    state = { data: "", firstName: "", lastName:"", visible: false, animation: new Animated.Value(), status: "offline" };
     
 
     componentDidMount(){
@@ -28,7 +29,7 @@ class Dashboard extends Component {
         //     ToastAndroid.SHORT,
         //     ToastAndroid.CENTER,
         //   );
-        Geolocation.getCurrentPosition(info => this.determinePosition(info));      
+        // Geolocation.getCurrentPosition(info => this.determinePosition(info));      
         this._isMounted = true;
         if(this._isMounted){
             this.getItemValue();
@@ -79,39 +80,93 @@ class Dashboard extends Component {
         }
     }
 
+    setValuesDefault(response){
+        let nameValue = response.name;
+        nameValue = nameValue.split(' ');
+        let firstName = nameValue[0];
+        let lastName = "";
+        nameValue.shift();
+        nameValue.map((item)=>{
+            lastName = lastName + item + ' ';
+        })
+        lastName = lastName.trimRight();
+        this.setState({ data: response,
+                        firstName: firstName,
+                        lastName: lastName},()=>{
+                        console.log('RESPONSE', response);
+        });
+    }
+
+    setValues(response){
+        let nameValue = response.data.name;
+        nameValue = nameValue.split(' ');
+        let firstName = nameValue[0];
+        let lastName = "";
+        nameValue.shift();
+        nameValue.map((item)=>{
+            lastName = lastName + item + ' ';
+        })
+        lastName = lastName.trimRight();
+        this.setState({ data: response.data,
+                        firstName: firstName,
+                        lastName: lastName},()=>{
+            console.log('RESPONSE', response);
+            AsyncStorage.setItem('data', JSON.stringify(response));
+        });
+    }
+
+    getAllData(userToken){
+        let config = {
+            headers: {
+              'x-access-token': userToken
+            }
+        }
+        axios.all([
+            axios.get('https://piktordigitalid.herokuapp.com/api/employee/details', config),
+            axios.get('https://piktordigitalid.herokuapp.com/api/holidays', config),
+          ])
+          .then(axios.spread((detailsResponse, holidaysReponse) => {
+            AsyncStorage.setItem('detailsResponse', JSON.stringify(detailsResponse.data));
+            AsyncStorage.setItem('holidaysReponse', JSON.stringify(holidaysReponse.data));
+            console.log('detailsResponse ', detailsResponse);
+            console.log('holidaysReponse ', holidaysReponse);
+          }));
+    }
+
     async getItemValue() {
         const email = await AsyncStorage.getItem('email');
         const profileData = await AsyncStorage.getItem('data');
         const userToken = await AsyncStorage.getItem('userToken');
         console.log('user-token dashboard',userToken)
         let self=this;
+        console.log('profileData', profileData);
         if(profileData){
-            this.setState({data: JSON.parse(profileData)})
+            // this.setState({ data: JSON.parse(profileData) })
+            self.setValuesDefault(JSON.parse(profileData))
         } else {
-           setTimeout(function(){
-            self.setState({data: response})
-            AsyncStorage.setItem('data', JSON.stringify(response));
-           },5000)
+            self.getAllData(userToken);
+            let config = {
+                headers: {
+                  'x-access-token': userToken
+                }
+            }
+            axios.get('https://piktordigitalid.herokuapp.com/api/employee', config)
+            .then(response => self.setValues(response));
+    
         }
 
-        debugger;
-        try {
-            await GoogleSignin.signInSilently();
-            console.log("reached");
+        // try {
+        //     await GoogleSignin.signInSilently();
+        //     console.log("reached");
             
-            const tokens = await GoogleSignin.getTokens();
-            debugger;
-            console.log('local-host',)
-            console.log('silentlysignin',tokens)
-        } catch(error) {
-            console.log("silent sign in error ", error);
+        //     const tokens = await GoogleSignin.getTokens();
+        //     console.log('local-host',)
+        //     console.log('silentlysignin',tokens)
+        // } catch(error) {
+        //     console.log("silent sign in error ", error);
             
-        }
+        // }
         
-    }
-
-    moveTo(){
-        this.props.navigation.navigate('HolidayList');
     }
 
     routeTo(data){
@@ -131,9 +186,9 @@ class Dashboard extends Component {
                     // resizeMode="cover"
                 />
                 <LinearGradient colors={["transparent", "transparent", "transparent", "rgba(255,255,255,0.1)", "rgba(255,255,255,0.2)", "rgba(255,255,255,0.3)", "rgba(255,255,255,0.4)", "rgba(255,255,255,0.5)", "rgba(255,255,255,0.6)", "rgba(255,255,255,0.7)", "rgba(255,255,255,0.8)", "rgba(255,255,255,0.9)", "rgba(255,255,255,0.9)", "rgba(255,255,255,0.9)", "rgba(255,255,255,1)", "rgba(255,255,255,1)", "rgba(255,255,255,1)"]}  style={styles.linearStyle} />
-                <Text style={styles.firstName}>{this.state.data.firstName}</Text>
-                <Text style={styles.lastName}>{this.state.data.lastName}</Text>
-                <Text style={styles.otherDetails}>{this.state.data.designation} {this.state.data.employeeId}</Text>
+                <Text style={styles.firstName}>{this.state.firstName}</Text>
+                <Text style={styles.lastName}>{this.state.lastName}</Text>
+                <Text style={styles.otherDetails}>{this.state.data.designation} #{this.state.data.employeeId}</Text>
                 <View style={styles.barCodeData}>
                     <Barcode value={this.state.data.mobile} format="CODE128" height={50} /> 
                 </View> 
@@ -164,9 +219,6 @@ class Dashboard extends Component {
                                 <Image style={styles.insideLogo} source={require("../../assets/png/Piktorlabs_LOGO_Black.png")}/>
                                 <View style={styles.statusBar}>
                                     <Text style={styles.statusText}>YOUR STATUS</Text>
-                                    <TouchableOpacity style={styles.holidaysContainer} onPress={()=>this.moveTo()}>
-                                        <Text style={styles.holidays}>HOLIDAYS</Text>
-                                    </TouchableOpacity>
                                 </View>
                                 <ScrollView 
                                     horizontal={true} 
@@ -273,7 +325,8 @@ const styles = {
         position: 'absolute',
         bottom: 10,
         color: "#000",
-        opacity: 0.8
+        opacity: 0.8,
+        fontFamily: 'TitilliumWeb-Regular'
     },
     barCodeData: {
         position: 'absolute',
