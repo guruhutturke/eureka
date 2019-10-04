@@ -11,12 +11,13 @@ class SearchPeople extends Component {
 
     componentDidMount(){
       this.getItemValue();
-      this.setState({ peopleList: data.data})
+      
     }
 
     async getItemValue() {
       const email = await AsyncStorage.getItem('email');
       let detailsResponse = await AsyncStorage.getItem('detailsResponse');
+      this.setState({ peopleList: JSON.parse(detailsResponse)})
       console.log('detailsResponse', JSON.parse(detailsResponse));
   }
 
@@ -126,8 +127,8 @@ class SearchPeople extends Component {
           );
         } else {
           return (
-            <View>
-              <Text>LOADING</Text>
+            <View style={styles.logoContainer}>
+              <Image source={require('../../assets/gifs/loader.gif')} style={iconStyle}/>
             </View>
           )
         }
@@ -135,6 +136,12 @@ class SearchPeople extends Component {
 }
 
 const styles = {
+    logoContainer: {
+      position: 'relative',
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
     container: {
       flex: 1,
       position: 'relative',

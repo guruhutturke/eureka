@@ -51,7 +51,7 @@ class LoginForm extends Component{
                 self.setState({loader: true})
             }
             self.props.navigation.navigate(userToken ? 'Dashboard' : 'Login')
-        }, 3000)
+        }, 1800)
         this._configureGoogleSignIn();
     }
 
@@ -125,8 +125,9 @@ class LoginForm extends Component{
             return (
                 <View style={styles.loginViewLoader}>
                     <View style={styles.logoContainer}>
-                        <Animated.Image style={[styles.logo,{opacity: this.state.animation}]} source={require("../../assets/png/Piktorlabs_LOGO_Black.png")}/> 
+                        <Animated.Image style={[styles.logo,{opacity: this.state.animation}]} source={require("../../assets/png/logo.png")}/> 
                     </View>
+                    <Text style={styles.textLogo}>PIKTORLABS</Text>
                 </View>
             )
         }
@@ -139,13 +140,19 @@ const styles = {
         flex: 1,
         width: wp('105%'),
         height: hp('15%'),
-        flexDirection:'row',
         justifyContent: 'center',
         alignItems: 'center'
     },
+    textLogo: {
+        position: 'absolute',
+        fontFamily: 'TitilliumWeb-Bold',
+        bottom: 20,
+        letterSpacing: 1,
+        color: '#999'
+    },
     logo: {
-        height: hp('5%'),
-        width: wp('45%')
+        height: hp('30%'),
+        width: wp('50%')
     },
     loginViewLoader:{
         position: 'relative',

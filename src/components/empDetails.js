@@ -2,39 +2,27 @@ import React, {Component} from 'react';
 import { Text, ScrollView, View, TextInput, Image, TouchableOpacity, Linking, Platform } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-community/async-storage';
-import response from '../data/response.json'
 
 class empDetails extends Component {
-    state = { name:"", photoUrl:"", phoneNumber:"", email:"", address:"", designation:"", data:"", title:"" }
+    state = { name:"", photoUrl:"", phoneNumber:"", email:"", designation:"", employeeId:"", managerId:"", location:""}
     
     componentDidMount(){
+        this.getItemValue()
         let name = this.props.navigation.getParam('name', '');
         let photoUrl = this.props.navigation.getParam('photoUrl', '');
-        let phoneNumber = this.props.navigation.getParam('phoneNumber', '');
+        let phoneNumber = this.props.navigation.getParam('mobile', '');
         let email = this.props.navigation.getParam('email', '');
-        let address = this.props.navigation.getParam('address', '');
         let designation = this.props.navigation.getParam('designation', '');
-        if(name !== ""){
-            this.setState({ name, photoUrl, phoneNumber, email, address, designation, title: "EMPLOYEE"})
-        } else {
-            this.getItemValue();
-        }
+        let employeeId = this.props.navigation.getParam('employeeId', '');
+        let managerId = this.props.navigation.getParam('managerId', '');
+        let location = this.props.navigation.getParam('location', '');
+        this.setState({ name, photoUrl, phoneNumber, email, designation, employeeId, managerId, location},()=>{
+            console.log(this.state)
+        })
     }
 
     async getItemValue() {
         const email = await AsyncStorage.getItem('email');
-        const profileData = await AsyncStorage.getItem('data');
-        let self=this;
-        if(profileData){
-            this.setState({ data: JSON.parse(profileData),
-                            email: email,
-                            title: "PERSONAL" })
-        } else {
-           setTimeout(function(){
-            self.setState({data: response})
-            AsyncStorage.setItem('data', JSON.stringify(response));
-           },5000)
-        }
     }
 
     dialCall(){
@@ -57,25 +45,25 @@ class empDetails extends Component {
                 phoneStyle, phoneText, section, rightSection, title, value, noBorder } = styles;
         return(
             <ScrollView style={container}>
-                <Text style={headerStyle}>{this.state.title} DETAILS</Text>
+                <Text style={headerStyle}>EMPLOYEE DETAILS</Text>
                 <View style={topSection}>
                     <View style={photoContainer}>
-                        <Image style={styles.picstyle} source={{uri:this.state.photoUrl || this.state.data.photoUrl}}></Image>
+                        <Image style={styles.picstyle} source={{uri:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Google_Images_2015_logo.svg/1200px-Google_Images_2015_logo.svg.png'}}></Image>
                     </View>
-                    <Text style={textStyle}>{this.state.name || (this.state.data.firstName + ' ' + this.state.data.lastName)}</Text>
+                    <Text style={textStyle}>{this.state.name}</Text>
                     <TouchableOpacity style={phoneStyle} onPress={()=>this.dialCall()}>
-                        <Text style={phoneText}>{this.state.phoneNumber || this.state.data.mobile}</Text>
+                        <Text style={phoneText}>{this.state.phoneNumber}</Text>
                         <Image source={require('../../assets/png/phone.png')} />
                     </TouchableOpacity>
                 </View>
                 <View style={section}>
                     <View>
                         <Text style={title}>DESIGNATION</Text>
-                        <Text style={value}>{this.state.designation || this.state.data.designation}</Text>
+                        <Text style={value}>{this.state.designation}</Text>
                     </View>
                     <View style={rightSection}>
                         <Text style={title}>EMP.ID</Text>
-                        <Text style={value}>#40</Text>
+                        <Text style={value}>#{this.state.employeeId}</Text>
                     </View>
                 </View>
                 <View style={section}>
@@ -92,7 +80,7 @@ class empDetails extends Component {
                 <View style={section}>
                     <View>
                         <Text style={title}>REPORTING TO</Text>
-                        <Text style={value}>Vidhi Maheswari</Text>
+                        <Text style={value}>{this.state.managerId}</Text>
                     </View>
                 </View>
                 <View style={[section, noBorder]}>
@@ -102,7 +90,7 @@ class empDetails extends Component {
                     </View>
                     <View style={rightSection}>
                         <Text style={title}>REGION</Text>
-                        <Text style={value}>India</Text>
+                        <Text style={value}>{this.state.location}</Text>
                     </View>
                 </View>
             </ScrollView>
@@ -158,7 +146,7 @@ const styles = {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        width: wp('40%')
+        width: wp('45%')
     },
     phoneText: {
         color: '#fff',

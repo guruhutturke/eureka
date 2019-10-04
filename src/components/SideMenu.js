@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {NavigationActions} from 'react-navigation';
 import AsyncStorage from '@react-native-community/async-storage';
 import {ScrollView, Text, View, Image, TouchableOpacity} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import axios from 'axios';
 import { widthPercentageToDP, heightPercentageToDP } from 'react-native-responsive-screen';
 
 class SideMenu extends Component {
@@ -31,7 +31,7 @@ class SideMenu extends Component {
   }
   
   setValues(response){
-    let nameValue = response.name;
+    let nameValue = response.data.name;
     nameValue = nameValue.split(' ');
     let firstName = nameValue[0];
     let lastName = "";
@@ -40,15 +40,22 @@ class SideMenu extends Component {
         lastName = lastName + item + ' ';
     })
     lastName = lastName.trimRight();
-    this.setState({ data: response,
+    this.setState({ data: response.data,
                     firstName: firstName,
                     lastName: lastName});
   }
 
   async getItemValue() {
     this.email = await AsyncStorage.getItem('email');
-    const profileData = await AsyncStorage.getItem('data');
-    this.setValues(JSON.parse(profileData));
+    const userToken = await AsyncStorage.getItem('userToken');
+    let self=this;
+    let config = {
+      headers: {
+        'x-access-token': userToken
+      }
+    }
+    axios.get('https://piktordigitalid.herokuapp.com/api/employee', config)
+    .then(response => self.setValues(response));
   }
 
 

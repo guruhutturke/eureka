@@ -93,7 +93,7 @@ class Dashboard extends Component {
         this.setState({ data: response,
                         firstName: firstName,
                         lastName: lastName},()=>{
-                        console.log('RESPONSE', response);
+                        console.log('RESPONSE default', response);
         });
     }
 
@@ -111,7 +111,7 @@ class Dashboard extends Component {
                         firstName: firstName,
                         lastName: lastName},()=>{
             console.log('RESPONSE', response);
-            AsyncStorage.setItem('data', JSON.stringify(response));
+            AsyncStorage.setItem('data', JSON.stringify(response.data));
         });
     }
 
@@ -124,12 +124,15 @@ class Dashboard extends Component {
         axios.all([
             axios.get('https://piktordigitalid.herokuapp.com/api/employee/details', config),
             axios.get('https://piktordigitalid.herokuapp.com/api/holidays', config),
+            axios.get('https://piktordigitalid.herokuapp.com/api/employee/dobList', config)
           ])
-          .then(axios.spread((detailsResponse, holidaysReponse) => {
+          .then(axios.spread((detailsResponse, holidaysReponse, birthdayResponse) => {
             AsyncStorage.setItem('detailsResponse', JSON.stringify(detailsResponse.data));
             AsyncStorage.setItem('holidaysReponse', JSON.stringify(holidaysReponse.data));
+            AsyncStorage.setItem('birthdayResponse', JSON.stringify(birthdayResponse.data));
             console.log('detailsResponse ', detailsResponse);
             console.log('holidaysReponse ', holidaysReponse);
+            console.log('birthdayResponse ', birthdayResponse);
           }));
     }
 
@@ -181,9 +184,9 @@ class Dashboard extends Component {
                 </View>
                  <ProgressiveImage 
                     style={styles.profilePic}
-                    thumbnailSource={{ uri: this.state.data.placeholder}}
+                    thumbnailSource={{ uri: 'https://piktorlabs-digitalidcard.s3.amazonaws.com/saurav%40piktorlabs.com/placeholder.png'}}
                     source={{uri: this.state.data.photoUrl}}
-                    // resizeMode="cover"
+                    resizeMode="cover"
                 />
                 <LinearGradient colors={["transparent", "transparent", "transparent", "rgba(255,255,255,0.1)", "rgba(255,255,255,0.2)", "rgba(255,255,255,0.3)", "rgba(255,255,255,0.4)", "rgba(255,255,255,0.5)", "rgba(255,255,255,0.6)", "rgba(255,255,255,0.7)", "rgba(255,255,255,0.8)", "rgba(255,255,255,0.9)", "rgba(255,255,255,0.9)", "rgba(255,255,255,0.9)", "rgba(255,255,255,1)", "rgba(255,255,255,1)", "rgba(255,255,255,1)"]}  style={styles.linearStyle} />
                 <Text style={styles.firstName}>{this.state.firstName}</Text>
